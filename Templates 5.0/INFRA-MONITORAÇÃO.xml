@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2025-01-28T11:09:52Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Monitorar recursos</template>
+            <name>Monitorar recursos</name>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <name>Processo que está consumido mais CPU</name>
+                    <key>system.run[&quot;powershell.exe -NoProfile -ExecutionPolicy Bypass -Command Get-Process ^| Sort-Object -Property CPU -Descending ^| Select-Object -First 1 -Property Name,Id,CPU&quot;]</key>
+                    <delay>5m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                </item>
+                <item>
+                    <name>Top 10 processos com maior uso de CPU</name>
+                    <key>system.run[&quot;powershell.exe -NoProfile -ExecutionPolicy Bypass -Command Get-Process ^| Sort-Object -Property CPU -Descending ^| Select-Object -First 10 -Property Name,Id,CPU&quot;]</key>
+                    <delay>5m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                </item>
+                <item>
+                    <name>Processo que está consumido mais memória</name>
+                    <key>system.run[&quot;powershell.exe -NoProfile -ExecutionPolicy Bypass -Command Get-Process ^| Sort-Object -Property WorkingSet -Descending ^| Select-Object -First 1 -Property Name,Id,WorkingSet&quot;]</key>
+                    <delay>5m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                </item>
+                <item>
+                    <name>Top 10 processos com maior uso de memória</name>
+                    <key>system.run[&quot;powershell.exe -NoProfile -ExecutionPolicy Bypass -Command Get-Process ^| Sort-Object -Property WorkingSet -Descending ^| Select-Object -First 10 -Property Name,Id,WorkingSet&quot;]</key>
+                    <delay>5m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                </item>
+                <item>
+                    <name>Histórico de sessões de usuário</name>
+                    <key>system.run[&quot;query user&quot;]</key>
+                    <delay>5m</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                </item>
+            </items>
+        </template>
+    </templates>
+</zabbix_export>
