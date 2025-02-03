@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2025-02-03T11:15:35Z</date>
+    <groups>
+        <group>
+            <name>Templates T-Systems</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template EN TCP Out Of Memory Error Log Linux</template>
+            <name>Template EN TCP Out Of Memory Error Log Linux</name>
+            <description>Monitorar a Log de erro e gera alertas de falhas TCP: Out Of Memory&#13;
+&#13;
+Importante: Necessario Encerrar o alerta manualmente.</description>
+            <groups>
+                <group>
+                    <name>Templates T-Systems</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>TCP Memory</name>
+                </application>
+                <application>
+                    <name>TCP Out Of Memory Error Log</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>TCP Out Of Memory Error Log {$ALERTLOG}</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>log[&quot;{$ALERTLOG}&quot;,ERROR,,,skip,,]</key>
+                    <delay>180s</delay>
+                    <trends>0</trends>
+                    <value_type>LOG</value_type>
+                    <applications>
+                        <application>
+                            <name>TCP Out Of Memory Error Log</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{count(5m,had ERROR indication,like)}&gt;=1</expression>
+                            <recovery_mode>RECOVERY_EXPRESSION</recovery_mode>
+                            <recovery_expression>{count(5m,had ERROR indication,like)}=0</recovery_expression>
+                            <name>{HOST.NAME}: Detectado falha TCP Out Of Memory no arquivo de log do Linux</name>
+                            <opdata>{$ALERTLOG} - {ITEM.LASTVALUE}</opdata>
+                            <status>DISABLED</status>
+                            <priority>HIGH</priority>
+                            <description>Detectado falha TCP Out Of Memory no arquivo de log do Linux</description>
+                            <manual_close>YES</manual_close>
+                            <tags>
+                                <tag>
+                                    <tag>prioridade</tag>
+                                    <value>0</value>
+                                </tag>
+                            </tags>
+                        </trigger>
+                    </triggers>
+                </item>
+                <item>
+                    <name>TCP Memory Max</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[awk '{print $3}' /proc/sys/net/ipv4/tcp_rmem]</key>
+                    <applications>
+                        <application>
+                            <name>TCP Memory</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>TCP Número de conexões estabelecidas</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>system.run[netstat -ant | grep ESTABLISHED | wc -l]</key>
+                    <delay>2m</delay>
+                    <description>Número de conexões TCP estabelecidas</description>
+                    <applications>
+                        <application>
+                            <name>TCP Memory</name>
+                        </application>
+                    </applications>
+                </item>
+                <item>
+                    <name>TCP Memory Media</name>
+                    <type>DEPENDENT</type>
+                    <key>vfs.file.contents[/proc/sys/net/ipv4/tcp_rmemavg]</key>
+                    <delay>0</delay>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>TCP Memory Media</description>
+                    <applications>
+                        <application>
+                            <name>TCP Memory</name>
+                        </application>
+                    </applications>
+                    <master_item>
+                        <key>vfs.file.contents[/proc/sys/net/ipv4/tcp_rmem]</key>
+                    </master_item>
+                </item>
+                <item>
+                    <name>TCP Memory</name>
+                    <type>ZABBIX_ACTIVE</type>
+                    <key>vfs.file.contents[/proc/sys/net/ipv4/tcp_rmem]</key>
+                    <trends>0</trends>
+                    <value_type>TEXT</value_type>
+                    <description>Monitorar os valores atuais da memória TCP.</description>
+                    <applications>
+                        <application>
+                            <name>TCP Memory</name>
+                        </application>
+                    </applications>
+                </item>
+            </items>
+            <tags>
+                <tag>
+                    <tag>MON</tag>
+                    <value>LOG</value>
+                </tag>
+            </tags>
+            <macros>
+                <macro>
+                    <macro>{$ALERTLOG}</macro>
+                    <value>/var/log/messages</value>
+                    <description>E:\EMC NetWorker\nsr\logs\daemon.log</description>
+                </macro>
+                <macro>
+                    <macro>{$ERROR_COD}</macro>
+                    <value>TCP: Out Of Memory</value>
+                    <description>TCP: Out Of Memory</description>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
