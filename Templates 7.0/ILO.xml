@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>7.0</version>
+    <date>2025-02-07T19:50:15Z</date>
+    <groups>
+        <group>
+            <name>Templates</name>
+        </group>
+        <group>
+            <name>Templates/Server hardware</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Monitoramento de iLO</template>
+            <name>Monitoramento de  iLO</name>
+            <description>Verificação da saúde das ILO's</description>
+            <groups>
+                <group>
+                    <name>Templates</name>
+                </group>
+                <group>
+                    <name>Templates/Server hardware</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>ILO's Health Check</name>
+                </application>
+            </applications>
+            <items>
+                <item>
+                    <name>Status iLO</name>
+                    <type>EXTERNAL</type>
+                    <key>ilo_monitor.py</key>
+                    <delay>5m</delay>
+                    <description>Validação da saúde dos subsistemas da iLO</description>
+                    <inventory_link>HARDWARE</inventory_link>
+                    <applications>
+                        <application>
+                            <name>ILO's Health Check</name>
+                        </application>
+                    </applications>
+                    <triggers>
+                        <trigger>
+                            <expression>{last()}&gt;0</expression>
+                            <name>Falha em subsistemas da iLO</name>
+                            <priority>AVERAGE</priority>
+                            <manual_close>YES</manual_close>
+                        </trigger>
+                    </triggers>
+                </item>
+            </items>
+        </template>
+    </templates>
+</zabbix_export>
